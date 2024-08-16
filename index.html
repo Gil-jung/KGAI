@@ -75,40 +75,39 @@
                             document.getElementById('description').innerHTML = `<h2>${keyword}</h2><p>${text}</p>`;
                         });
                 });
-            });
 
-        document.getElementById('search').addEventListener('input', function(e) {
-            var query = e.target.value.toLowerCase();
-            
-            // 모든 노드와 엣지를 숨기기
-            cy.elements().hide();
+                document.getElementById('search').addEventListener('input', function(e) {
+                    var query = e.target.value.toLowerCase();
+                    
+                    // 모든 노드와 엣지를 숨기기
+                    cy.elements().hide();
 
-            // 검색어와 일치하는 노드를 찾기
-            var matchingNodes = cy.nodes().filter(function(node) {
-                return node.data('label').toLowerCase().includes(query);
-            });
+                    // 검색어와 일치하는 노드를 찾기
+                    var matchingNodes = cy.nodes().filter(function(node) {
+                        return node.data('label').toLowerCase().includes(query);
+                    });
 
-            if (matchingNodes.length > 0) {
-                // 일치하는 노드와 관련된 엣지 및 인접 노드 표시
-                matchingNodes.show();
-                matchingNodes.connectedEdges().show();
-                matchingNodes.connectedEdges().connectedNodes().show();
+                    if (matchingNodes.length > 0) {
+                        // 일치하는 노드와 관련된 엣지 및 인접 노드 표시
+                        matchingNodes.show();
+                        matchingNodes.connectedEdges().show();
+                        matchingNodes.connectedEdges().connectedNodes().show();
 
-                // 일치하는 노드를 강조 표시
-                matchingNodes.style({
-                    'background-color': '#f00',
-                    'color': '#fff'
+                        // 일치하는 노드를 강조 표시
+                        matchingNodes.style({
+                            'background-color': '#f00',
+                            'color': '#fff'
+                        });
+                    } else {
+                        // 검색어가 없으면 모든 요소를 다시 표시
+                        cy.elements().show();
+                        cy.nodes().style({
+                            'background-color': '#61bffc',
+                            'color': '#000'
+                        });
+                    }
                 });
-            } else {
-                // 검색어가 없으면 모든 요소를 다시 표시
-                cy.elements().show();
-                cy.nodes().style({
-                    'background-color': '#61bffc',
-                    'color': '#000'
-                });
-            }
-        });
-
+            });
     </script>
 </body>
 </html>
