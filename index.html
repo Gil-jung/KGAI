@@ -78,6 +78,101 @@
                         });
                 });
 
+                cy.on('mouseover', 'node', function(event) {
+                    var node = event.target;
+                    var tooltip = document.createElement('div');
+                    tooltip.id = 'tooltip';
+                    tooltip.innerHTML = `
+                        <strong>${node.data('label')}</strong><br>
+                        ${node.data('description')}
+                    `;
+                    document.body.appendChild(tooltip);
+
+                    tooltip.style.position = 'absolute';
+                    tooltip.style.left = event.originalEvent.pageX + 'px';
+                    tooltip.style.top = event.originalEvent.pageY + 'px';
+                    tooltip.style.backgroundColor = '#fff';
+                    tooltip.style.border = '1px solid #ccc';
+                    tooltip.style.padding = '10px';
+                    tooltip.style.borderRadius = '4px';
+                    tooltip.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+                });
+
+                cy.on('mouseout', 'node', function() {
+                    var tooltip = document.getElementById('tooltip');
+                    if (tooltip) {
+                        document.body.removeChild(tooltip);
+                    }
+                });
+
+                cy.style()
+                    .selector('edge')
+                    .style({
+                        'width': function(ele) {
+                            return ele.data('weight') || 2;  // 엣지의 중요도에 따라 두께 설정
+                        },
+                        'line-color': function(ele) {
+                            return ele.data('color') || '#ccc';  // 엣지의 색상 설정
+                        },
+                        'target-arrow-color': '#ccc',
+                        'target-arrow-shape': 'triangle'
+                });
+
+                cy.style()
+                    .selector('.highlighted')
+                    .style({
+                        'line-color': '#f00',
+                        'target-arrow-color': '#f00',
+                        'transition-property': 'line-color, target-arrow-color',
+                        'transition-duration': '0.5s'
+                    });
+
+                    cy.on('tap', 'edge', function(e) {
+                        var edge = e.target;
+                        edge.addClass('highlighted');
+
+                        setTimeout(function() {
+                            edge.removeClass('highlighted');
+                        }, 1000);
+                });
+
+                cy.layout({
+                    name: 'cose',  // 또는 'klay', 'cola' 등
+                    padding: 10,
+                    nodeRepulsion: 4000,
+                    idealEdgeLength: 100,
+                    edgeElasticity: 100,
+                    animate: true
+                }).run();
+
+                cy.nodes().forEach(function(node) {
+                    var group = node.data('group');
+                    node.style('background-color', group === 'Group A' ? '#ff7f0e' : '#1f77b4');
+                });
+
+                function searchNodes(query) {
+                    var results = cy.nodes().filter(function(node) {
+                        return node.data('label').toLowerCase().includes(query.toLowerCase());
+                    });
+
+                    cy.elements().removeClass('faded');
+                    cy.elements().not(results).addClass('faded');
+                }
+
+                function filterNodes(attribute, value) {
+                    var results = cy.nodes().filter(function(node) {
+                        return node.data(attribute) === value;
+                    });
+
+                    cy.elements().removeClass('hidden');
+                    cy.elements().not(results).addClass('hidden');
+                }
+
+                cy.nodes().animate({
+                    style: { 'background-color': '#61bffc' },
+                    duration: 1000
+                });
+
                 document.getElementById('search').addEventListener('input', function(e) {
                     var query = e.target.value.toLowerCase();
                     
