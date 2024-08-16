@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "knowledge graph ai"
+version = "0.1.0"
+description = ""
+authors = ["Gil-jung <blueguitar1227@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.112.1"
+uvicorn = "^0.30.6"
+neo4j = "^5.23.1"
+elasticsearch = "^8.15.0"
+markdown = "^3.6"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
