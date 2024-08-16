@@ -1,5 +1,4 @@
-```
-graph TD
+```graph TD
     A[프론트엔드 - React] -->|API 요청| B[백엔드 - FastAPI]
     B -->|데이터 저장/조회| C[Neo4j 그래프 DB]
     B -->|문서 저장/조회| D[파일 시스템 - Markdown 문서]
