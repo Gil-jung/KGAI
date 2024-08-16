@@ -1,11 +1,11 @@
 {
     "nodes": [
-        {"id": "Machine Learning", "label": "Machine Learning"},
-        {"id": "Artificial Intelligence", "label": "Artificial Intelligence"},
-        {"id": "Deep Learning", "label": "Deep Learning"}
+        {"id": "machine_learning", "label": "Machine Learning"},
+        {"id": "artificial_intelligence", "label": "Artificial Intelligence"},
+        {"id": "deep_learning", "label": "Deep Learning"}
     ],
     "edges": [
-        {"from": "Machine Learning", "to": "Artificial Intelligence", "label": "is part of"},
-        {"from": "Deep Learning", "to": "Machine Learning", "label": "is part of"}
+        {"from": "artificial_intelligence", "to": "machine_learning", "label": "is a subset of"},
+        {"from": "machine_learning", "to": "deep_learning", "label": "is a subset of"}
     ]
 }
