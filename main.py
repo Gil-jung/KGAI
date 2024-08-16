@@ -9,7 +9,7 @@ app = FastAPI()
 # Neo4j 연결 설정
 neo4j_uri = "bolt://localhost:7687"
 neo4j_user = "neo4j"
-neo4j_password = "password"
+neo4j_password = "YpE6gYc-bGNHiU5CZQbNeoeCcp2FV09JeCgvX-jwUOU"
 graph = GraphDatabase.driver(neo4j_uri, auth=(neo4j_user, neo4j_password))
 
 # Elasticsearch 연결 설정 (수정된 부분)
