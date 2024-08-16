@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Graph</title>
+    <!-- Cytoscape.js 라이브러리 불러오기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.1/cytoscape.min.js"></script>
+    <style>
+        #cy {
+            width: 100%;
+            height: 100vh;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="cy"></div>
+
+    <script>
+        // JSON 파일에서 그래프 데이터 불러오기
+        fetch('graph.json')
+            .then(response => response.json())
+            .then(data => {
+                // Cytoscape 초기화
+                var cy = cytoscape({
+                    container: document.getElementById('cy'), // 그래프가 렌더링될 HTML 요소
+                    elements: {
+                        nodes: data.nodes.map(node => ({
+                            data: { id: node.id, label: node.label }
+                        })),
+                        edges: data.edges.map(edge => ({
+                            data: { source: edge.from, target: edge.to, label: edge.label }
+                        }))
+                    },
+                    style: [
+                        {
+                            selector: 'node',
+                            style: {
+                                'label': 'data(label)',
+                                'text-valign': 'center',
+                                'color': '#000',
+                                'background-color': '#61bffc'
+                            }
+                        },
+                        {
+                            selector: 'edge',
+                            style: {
+                                'label': 'data(label)',
+                                'width': 2,
+                                'line-color': '#ccc',
+                                'target-arrow-color': '#ccc',
+                                'target-arrow-shape': 'triangle'
+                            }
+                        }
+                    ],
+                    layout: {
+                        name: 'cose', // 레이아웃 방식 (e.g., grid, circle, cose 등)
+                        padding: 10
+                    }
+                });
+
+                // 노드 클릭 이벤트 처리
+                cy.on('tap', 'node', function(evt) {
+                    var node = evt.target;
+                    var keyword = node.data('id');
+                    // 해당 키워드의 설명을 마크다운 파일에서 가져와 표시
+                    fetch(`docs/${keyword}.md`)
+                        .then(response => response.text())
+                        .then(text => {
+                            alert(`Keyword: ${keyword}\n\n${text}`);
+                        });
+                });
+            });
+    </script>
+</body>
+</html>
