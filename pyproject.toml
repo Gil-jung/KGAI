@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "knowledge graph ai"
+name = "knowledge graph of ai"
 version = "0.1.0"
 description = ""
 authors = ["Gil-jung <blueguitar1227@gmail.com>"]
@@ -10,8 +10,11 @@ python = "^3.11"
 fastapi = "^0.112.1"
 uvicorn = "^0.30.6"
 neo4j = "^5.23.1"
-elasticsearch = "^8.15.0"
-markdown = "^3.6"
+pymongo = "^4.8.0"
+cryptography = "^43.0.0"
+python-dotenv = "^1.0.1"
+openai = "^1.40.8"
+requests = "^2.32.3"
 
 
 [tool.poetry.group.dev.dependencies]

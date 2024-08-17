@@ -1,11 +1,13 @@
 ```mermaid
 graph TD
-    A[프론트엔드 - React] -->|API 요청| B[백엔드 - FastAPI]
-    B -->|데이터 저장/조회| C[Neo4j 그래프 DB]
-    B -->|문서 저장/조회| D[파일 시스템 - Markdown 문서]
-    B -->|전문 검색| E[Elasticsearch]
-    A -->|그래프 시각화| F[Cytoscape.js]
-    A -->|마크다운 렌더링| G[React-Markdown]
-    H[AI 모델 - 그래프 확장] -->|새로운 노드/관계 추가| B
-    I[사용자] -->|상호작용| A
+    A[사용자] -->|웹 브라우저| B[프론트엔드 - React]
+    B -->|API 요청| C[백엔드 - FastAPI]
+    C -->|그래프 데이터| D[Neo4j]
+    C -->|마크다운 문서| E[MongoDB]
+    C -->|의존성 관리| F[Poetry]
+    C -->|노드 확장| G[외부 API / AI 모델]
+    B -->|관계도 시각화| H[Cytoscape.js]
+    B -->|검색 인터페이스| I[고급 검색 컴포넌트]
+    B -->|마크다운 렌더링| J[React Markdown]
+    C -->|고급 검색 및 필터링| K[검색 로직]
 ```
