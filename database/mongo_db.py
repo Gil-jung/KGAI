@@ -11,32 +11,33 @@ class MongoDatabase:
         db_name = os.getenv("MONGODB_DB_NAME")
         self.client = MongoClient(uri)
         self.db = self.client[db_name]
-        self.collection = self.db.markdown_documents
+        self.collection = self.db.nodes
 
-    def create_document(self, node_id, content):
+    def create_document(self, node_id, markdown_content):
         document = {
-            "node_id": node_id,
-            "content": content
+            "_id": str(node_id),
+            "markdown_content": markdown_content
         }
         result = self.collection.insert_one(document)
-        return str(result.inserted_id)
+        return result.inserted_id
 
     def get_document(self, node_id):
-        document = self.collection.find_one({"node_id": node_id})
-        if document:
-            document['_id'] = str(document['_id'])
+        document = self.collection.find_one({"_id": str(node_id)})
         return document
 
-    def update_document(self, node_id, content):
+    def update_document(self, node_id, markdown_content):
         result = self.collection.update_one(
-            {"node_id": node_id},
-            {"$set": {"content": content}}
+            {"_id": str(node_id)},
+            {"$set": {"markdown_content": markdown_content}}
         )
         return result.modified_count
 
     def delete_document(self, node_id):
-        result = self.collection.delete_one({"node_id": node_id})
+        result = self.collection.delete_one({"_id": str(node_id)})
         return result.deleted_count
+
+    def close(self):
+        self.client.close()
 
 # MongoDB 데이터베이스 인스턴스 생성
 mongo_db = MongoDatabase()

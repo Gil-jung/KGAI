@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Typography, Paper, Button, CircularProgress } from '@mui/material';
+import { Typography, Paper, CircularProgress } from '@mui/material';
 import axios from 'axios';
 
-const NodeDetails = ({ node, onExpandNode }) => {
+const NodeDetails = ({ node }) => {
   const [details, setDetails] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -25,12 +25,6 @@ const NodeDetails = ({ node, onExpandNode }) => {
     }
   };
 
-  const handleExpand = () => {
-    if (node) {
-      onExpandNode(node.id);
-    }
-  };
-
   if (!node) {
     return <Typography>노드를 선택해주세요.</Typography>;
   }
@@ -44,15 +38,13 @@ const NodeDetails = ({ node, onExpandNode }) => {
       <Typography variant="h5" gutterBottom>{node.label}</Typography>
       {details && (
         <>
+          <Typography variant="subtitle1">카테고리: {details.category}</Typography>
           <Typography variant="subtitle1">속성:</Typography>
           {Object.entries(details.properties).map(([key, value]) => (
             <Typography key={key} variant="body2">{`${key}: ${value}`}</Typography>
           ))}
           <Typography variant="subtitle1" sx={{ mt: 2 }}>상세 내용:</Typography>
           <ReactMarkdown>{details.markdown_content}</ReactMarkdown>
-          <Button variant="contained" color="primary" onClick={handleExpand} sx={{ mt: 2 }}>
-            노드 확장
-          </Button>
         </>
       )}
     </Paper>

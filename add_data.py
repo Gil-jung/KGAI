@@ -11,23 +11,27 @@ def add_data():
     url = "http://localhost:8000/add_data"
     headers = {"Content-Type": "application/json"}
     
-    # nodes.json 파일 읽기
-    with open('docs/nodes.json', 'r', encoding='utf-8') as file:
-        nodes_data = json.load(file)
-    
-    # 각 노드에 대해 Markdown 내용 추가
-    for node in nodes_data:
-        markdown_content = read_markdown_file(node['markdown_file'])
-        node['markdown_content'] = markdown_content
-    
-    # 데이터 전송
-    response = requests.post(url, data=json.dumps(nodes_data), headers=headers)
-    
-    if response.status_code == 200:
+    try:
+        with open('docs/nodes.json', 'r', encoding='utf-8') as file:
+            nodes_data = json.load(file)
+        
+        for node in nodes_data:
+            markdown_content = read_markdown_file(node['markdown_file'])
+            node['markdown_content'] = markdown_content
+        
+        response = requests.post(url, json=nodes_data, headers=headers)
+        response.raise_for_status()
+        
         print("Data added successfully!")
         return True
-    else:
-        print(f"Error adding data: {response.text}")
+    except requests.exceptions.RequestException as e:
+        print(f"Error adding data: {e}")
+        return False
+    except json.JSONDecodeError:
+        print("Error reading nodes.json file")
+        return False
+    except IOError:
+        print("Error reading markdown files")
         return False
 
 def cleanup_files(nodes_data):

@@ -15,6 +15,7 @@ cryptography = "^43.0.0"
 python-dotenv = "^1.0.1"
 openai = "^1.40.8"
 requests = "^2.32.3"
+pytest = "^8.3.2"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -23,3 +24,7 @@ pytest = "^8.3.2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+packages = [
+    {include = "*.py*", from = "."}
+]
