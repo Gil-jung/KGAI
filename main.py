@@ -1,15 +1,29 @@
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Path
+from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional, Dict
 from pydantic import BaseModel
 import traceback
 from database.neo4j_db import neo4j_db
 from database.mongo_db import mongo_db
+import logging
+from urllib.parse import unquote
 
 app = FastAPI(
     title="AI Knowledge Graph API",
     description="AI 지식 그래프를 위한 API",
     version="1.0.0",
 )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # React 앱의 URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 class NodeCreate(BaseModel):
     name: str
@@ -39,6 +53,28 @@ class EdgeResponse(BaseModel):
     source_id: int
     target_id: int
     relationship_type: str
+
+class EdgeUpdate(BaseModel):
+    relationship_type: str
+
+class NodeData(BaseModel):
+    id: int
+    name: str
+    category: str
+    properties: dict
+
+class EdgeData(BaseModel):
+    id: int
+    source: int
+    target: int
+    relationship_type: str
+
+class GraphData(BaseModel):
+    nodes: List[NodeData]
+    edges: List[EdgeData]
+
+class MarkdownResponse(BaseModel):
+    content: str
 
 @app.post("/nodes", response_model=NodeResponse, tags=["nodes"])
 async def create_node(node: NodeCreate):
@@ -127,15 +163,9 @@ async def search_nodes(
     category: Optional[str] = Query(None, description="노드 카테고리 필터"),
     limit: int = Query(10, description="결과 제한 수")
 ):
-    """
-    노드를 검색합니다.
-
-    - **query**: 검색할 키워드
-    - **category**: 검색할 노드의 카테고리 (선택사항)
-    - **limit**: 반환할 최대 결과 수 (기본값: 10)
-    """
     try:
-        results = neo4j_db.search_nodes(query, category, limit)
+        decoded_query = unquote(query)
+        results = neo4j_db.search_nodes(query=decoded_query, category=category, limit=limit)
         return [NodeResponse(id=result['id'], name=result['name'], category=result['category'], properties=result['properties']) for result in results]
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -178,6 +208,17 @@ async def get_node_edges(node_id: int):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.put("/edges/{edge_id}", response_model=EdgeResponse, tags=["edges"])
+async def update_edge(edge_id: int, edge_update: EdgeUpdate):
+    try:
+        result = neo4j_db.update_relationship(edge_id, edge_update.relationship_type)
+        if result:
+            return EdgeResponse(**result)
+        else:
+            raise HTTPException(status_code=404, detail=f"Edge {edge_id} not found")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.delete("/edges/{edge_id}", tags=["edges"])
 async def delete_edge(edge_id: int):
     """
@@ -191,6 +232,44 @@ async def delete_edge(edge_id: int):
             return {"message": "Edge deleted successfully"}
         else:
             raise HTTPException(status_code=404, detail="Edge not found")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/nodes/{node_id}", tags=["nodes"])
+async def delete_node(node_id: int = Path(..., description="삭제할 노드의 ID")):
+    try:
+        # Neo4j에서 노드 삭제
+        neo4j_success = neo4j_db.delete_node(node_id)
+        
+        # MongoDB에서 문서 삭제
+        mongo_success = mongo_db.delete_document(node_id)
+        
+        if neo4j_success and mongo_success:
+            return {"message": f"Node {node_id} successfully deleted from Neo4j and MongoDB"}
+        elif neo4j_success:
+            return {"message": f"Node {node_id} deleted from Neo4j, but not found in MongoDB"}
+        elif mongo_success:
+            return {"message": f"Node {node_id} deleted from MongoDB, but not found in Neo4j"}
+        else:
+            raise HTTPException(status_code=404, detail=f"Node {node_id} not found in Neo4j and MongoDB")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/nodes/{node_id}/with_connections", response_model=GraphData, tags=["nodes"])
+async def get_node_with_all_connections(node_id: int):
+    try:
+        result = neo4j_db.get_node_with_all_connections(node_id)
+        return GraphData(**result)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/nodes/{node_id}/markdown", response_model=MarkdownResponse, tags=["nodes"])
+async def get_node_markdown(node_id: int):
+    try:
+        markdown_content = mongo_db.get_markdown(node_id)
+        if markdown_content is None:
+            raise HTTPException(status_code=404, detail="Markdown content not found")
+        return MarkdownResponse(content=markdown_content)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

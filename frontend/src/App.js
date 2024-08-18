@@ -7,10 +7,17 @@ import './App.css';
 
 function App() {
   const [selectedNode, setSelectedNode] = useState(null);
-  const [graphData, setGraphData] = useState({ nodes: [], edges: [] });
+  const [graphData, setGraphData] = useState(null);
 
-  const handleNodeSelect = (node) => {
-    setSelectedNode(node);
+  const handleNodeSelect = async (nodeId) => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/nodes/${nodeId}/with_connections`);
+      setGraphData(response.data);
+      setSelectedNode(response.data.nodes.find(node => node.id === nodeId));
+    } catch (error) {
+      console.error('노드 정보 가져오기 오류:', error);
+      // 사용자에게 에러 메시지를 표시하는 로직 추가
+    }
   };
 
   const handleSearch = async (query, category) => {
@@ -18,20 +25,29 @@ function App() {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/search`, {
         params: { query, category }
       });
-      const nodes = response.data.map(result => ({
-        data: { id: result.id.toString(), label: result.name, category: result.category, ...result.properties }
-      }));
-      setGraphData({ nodes, edges: [] });
+      if (response.data.length > 0) {
+        const nodeId = response.data[0].id;
+        handleNodeSelect(nodeId);
+      } else {
+        console.log('No results found');
+        setGraphData(null);
+        setSelectedNode(null);
+      }
     } catch (error) {
       console.error('검색 중 오류 발생:', error);
+      // 에러 메시지 표시 로직
     }
   };
 
   return (
     <div className="App">
       <SearchComponent onSearch={handleSearch} />
-      <GraphVisualization data={graphData} onNodeSelect={handleNodeSelect} />
-      <NodeDetails node={selectedNode} />
+      {graphData ? (
+        <GraphVisualization data={graphData} onNodeSelect={handleNodeSelect} />
+      ) : (
+        <div>검색어를 입력하세요...</div>
+      )}
+      {selectedNode && <NodeDetails nodeId={selectedNode.id} />}
     </div>
   );
 }

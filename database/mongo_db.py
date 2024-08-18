@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from pymongo import MongoClient
 from bson import ObjectId
+from typing import Optional
 
 load_dotenv()
 
@@ -38,6 +39,10 @@ class MongoDatabase:
 
     def close(self):
         self.client.close()
+
+    def get_markdown(self, node_id: int) -> Optional[str]:
+        document = self.collection.find_one({"_id": str(node_id)})
+        return document['markdown_content'] if document else None
 
 # MongoDB 데이터베이스 인스턴스 생성
 mongo_db = MongoDatabase()
