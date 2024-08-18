@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import CytoscapeComponent from 'react-cytoscapejs';
+import './GraphVisualization.css';
 
 const GraphVisualization = ({ data, onNodeSelect }) => {
   const cyRef = useRef(null);
@@ -54,43 +55,45 @@ const GraphVisualization = ({ data, onNodeSelect }) => {
   }, [data, onNodeSelect]);
 
   return (
-    <CytoscapeComponent
-      elements={[]}
-      style={{ width: '100%', height: '600px' }}
-      cy={(cy) => { cyRef.current = cy; }}
-      layout={{ name: 'preset' }}
-      stylesheet={[
-        {
-          selector: 'node',
-          style: {
-            'background-color': (ele) => {
-              switch(ele.data('category')) {
-                case 'Person': return '#FF5733';
-                case 'Concept': return '#33FF57';
-                case 'Event': return '#3357FF';
-                default: return '#666';
-              }
-            },
-            'label': 'data(label)',
-            'color': '#fff',
-            'text-valign': 'center',
-            'text-halign': 'center',
+    <div className="graph-visualization">
+      <CytoscapeComponent
+        elements={[]}
+        style={{ width: '100%', height: '100%' }}
+        cy={(cy) => { cyRef.current = cy; }}
+        layout={{ name: 'preset' }}
+        stylesheet={[
+          {
+            selector: 'node',
+            style: {
+              'background-color': (ele) => {
+                switch(ele.data('category')) {
+                  case 'Person': return '#FF5733';
+                  case 'Concept': return '#33FF57';
+                  case 'Event': return '#3357FF';
+                  default: return '#666';
+                }
+              },
+              'label': 'data(label)',
+              'color': '#fff',
+              'text-valign': 'center',
+              'text-halign': 'center',
+            }
+          },
+          {
+            selector: 'edge',
+            style: {
+              'width': 3,
+              'line-color': '#ccc',
+              'target-arrow-color': '#ccc',
+              'target-arrow-shape': 'triangle',
+              'curve-style': 'bezier',
+              'label': 'data(label)',
+              'text-rotation': 'autorotate'
+            }
           }
-        },
-        {
-          selector: 'edge',
-          style: {
-            'width': 3,
-            'line-color': '#ccc',
-            'target-arrow-color': '#ccc',
-            'target-arrow-shape': 'triangle',
-            'curve-style': 'bezier',
-            'label': 'data(label)',
-            'text-rotation': 'autorotate'
-          }
-        }
-      ]}
-    />
+        ]}
+      />
+    </div>
   );
 };
 

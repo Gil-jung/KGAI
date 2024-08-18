@@ -16,7 +16,6 @@ function App() {
       setSelectedNode(response.data.nodes.find(node => node.id === nodeId));
     } catch (error) {
       console.error('노드 정보 가져오기 오류:', error);
-      // 사용자에게 에러 메시지를 표시하는 로직 추가
     }
   };
 
@@ -35,19 +34,26 @@ function App() {
       }
     } catch (error) {
       console.error('검색 중 오류 발생:', error);
-      // 에러 메시지 표시 로직
     }
   };
 
   return (
     <div className="App">
-      <SearchComponent onSearch={handleSearch} />
-      {graphData ? (
-        <GraphVisualization data={graphData} onNodeSelect={handleNodeSelect} />
-      ) : (
-        <div>검색어를 입력하세요...</div>
-      )}
-      {selectedNode && <NodeDetails nodeId={selectedNode.id} />}
+      <header className="App-header">
+        <SearchComponent onSearch={handleSearch} />
+      </header>
+      <main className="App-main">
+        <div className="graph-container">
+          {graphData ? (
+            <GraphVisualization data={graphData} onNodeSelect={handleNodeSelect} />
+          ) : (
+            <div className="graph-placeholder">검색어를 입력하세요...</div>
+          )}
+        </div>
+        <div className="details-container">
+          <NodeDetails nodeId={selectedNode?.id} />
+        </div>
+      </main>
     </div>
   );
 }

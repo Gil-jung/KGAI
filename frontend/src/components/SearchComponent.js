@@ -1,35 +1,36 @@
 import React, { useState } from 'react';
-import { TextField, Button, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import './SearchComponent.css';
 
 const SearchComponent = ({ onSearch }) => {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
 
-  const handleSearch = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     onSearch(query, category);
   };
 
   return (
-    <div>
-      <TextField
-        label="검색어"
+    <form className="search-form" onSubmit={handleSubmit}>
+      <input
+        type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        placeholder="검색어 입력..."
+        className="search-input"
       />
-      <FormControl sx={{ m: 1, minWidth: 120 }}>
-        <InputLabel>카테고리</InputLabel>
-        <Select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        >
-          <MenuItem value="">전체</MenuItem>
-          <MenuItem value="Person">인물</MenuItem>
-          <MenuItem value="Concept">개념</MenuItem>
-          <MenuItem value="Event">사건</MenuItem>
-        </Select>
-      </FormControl>
-      <Button variant="contained" onClick={handleSearch}>검색</Button>
-    </div>
+      <select
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+        className="search-category"
+      >
+        <option value="">모든 카테고리</option>
+        <option value="Person">Person</option>
+        <option value="Concept">Concept</option>
+        <option value="Event">Event</option>
+      </select>
+      <button type="submit" className="search-button">검색</button>
+    </form>
   );
 };
 

@@ -1,0 +1,24 @@
+.node-details {
+    height: 100%;
+    overflow-y: auto;
+  }
+  
+  .node-details h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .markdown-content {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  .node-details-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 1.2em;
+    color: #666;
+  }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import ReactMarkdown from 'react-markdown';
-import { Typography, Paper } from '@mui/material';
 import axios from 'axios';
+import ReactMarkdown from 'react-markdown';
+import './NodeDetails.css';
 
 const NodeDetails = ({ nodeId }) => {
   const [markdownContent, setMarkdownContent] = useState('');
@@ -14,21 +14,23 @@ const NodeDetails = ({ nodeId }) => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/nodes/${nodeId}/markdown`);
         setMarkdownContent(response.data.content);
       } catch (error) {
-        console.error('Error fetching markdown:', error);
-        setMarkdownContent('Failed to load markdown content.');
+        console.error('마크다운 가져오기 오류:', error);
+        setMarkdownContent('마크다운 내용을 불러오는 데 실패했습니다.');
       }
     };
 
     fetchMarkdown();
   }, [nodeId]);
 
-  if (!nodeId) return null;
+  if (!nodeId) return <div className="node-details-placeholder">노드를 선택하세요...</div>;
 
   return (
-    <Paper elevation={3} sx={{ p: 2 }}>
-      <Typography variant="h5" gutterBottom>Node Details</Typography>
-      <ReactMarkdown>{markdownContent}</ReactMarkdown>
-    </Paper>
+    <div className="node-details">
+      <h2>노드 상세 정보</h2>
+      <div className="markdown-content">
+        <ReactMarkdown>{markdownContent}</ReactMarkdown>
+      </div>
+    </div>
   );
 };
 
