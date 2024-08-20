@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Query, Path
 from fastapi.middleware.cors import CORSMiddleware
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Any
 from pydantic import BaseModel
 import traceback
 from database.neo4j_db import neo4j_db
@@ -34,7 +34,7 @@ class NodeCreate(BaseModel):
 class NodeUpdate(BaseModel):
     name: Optional[str] = None
     category: Optional[str] = None
-    properties: Optional[Dict[str, str]] = None
+    properties: Optional[Dict[str, Any]] = None
     markdown_content: Optional[str] = None
 
 class NodeResponse(BaseModel):
@@ -116,19 +116,22 @@ async def update_node(node_id: int, node: NodeUpdate):
     """
     try:
         # Neo4j 노드 업데이트
-        update_data = {k: v for k, v in node.dict().items() if v is not None and k != 'markdown_content'}
-        neo4j_result = neo4j_db.update_node(node_id, update_data)
+        update_data = {k: v for k, v in node.dict(exclude_unset=True).items() if v is not None and k != 'markdown_content'}
+        neo4j_result = neo4j_db.update_node(node_id, **update_data)
 
         # MongoDB 마크다운 문서 업데이트
         if node.markdown_content is not None:
             mongo_db.update_document(node_id, node.markdown_content)
 
-        return NodeResponse(
-            id=node_id,
-            name=neo4j_result['name'],
-            category=neo4j_result['category'],
-            properties=neo4j_result['properties']
-        )
+        if neo4j_result:
+            return NodeResponse(
+                id=node_id,
+                name=neo4j_result['name'],
+                category=neo4j_result['category'],
+                properties=neo4j_result['properties']
+            )
+        else:
+            raise HTTPException(status_code=404, detail="Node not found")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

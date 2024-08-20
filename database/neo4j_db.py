@@ -1,9 +1,11 @@
 from neo4j import GraphDatabase
+from dotenv import load_dotenv
 import os
 import logging
 from urllib.parse import unquote
 from typing import List, Optional, Dict, Any
 
+load_dotenv()
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
@@ -55,7 +57,7 @@ class Neo4jDatabase:
         result = tx.run(query, node_id=node_id)
         return result.single()
 
-    def update_node(self, node_id, name: Optional[str] = None, category: Optional[str] = None, properties: Optional[Dict[str, Any]] = None):
+    def update_node(self, node_id: int, name: Optional[str] = None, category: Optional[str] = None, properties: Optional[Dict[str, Any]] = None):
         with self.driver.session() as session:
             result = session.write_transaction(
                 self._update_node, node_id, name, category, properties
@@ -75,14 +77,15 @@ class Neo4jDatabase:
             query_parts.append(f"REMOVE n:{safe_category} SET n:{safe_category}, n.category = $category")
             params["category"] = category
         if properties is not None:
-            query_parts.append("SET n += $properties")
-            params["properties"] = properties
+            for key, value in properties.items():
+                query_parts.append(f"SET n.{key} = ${key}")
+                params[key] = value
 
         if not query_parts:
             return None
 
         query = (
-            "MATCH (n) WHERE id(n) = $node_id "
+            "MATCH (n) WHERE elementId(n) = $node_id "
             + " ".join(query_parts)
             + " RETURN n"
         )
