@@ -85,71 +85,26 @@ def main():
     manager = KnowledgeGraphManager()
     new_node = True
 
+    print(open("Documents/PML1/01_introduction/00019_the_relationship_between_ml_and_other_fields.md", "r", encoding="utf-8").read())
 
-    node = manager.add_node(
-        name="회귀",
-        category="지도학습 작업",
-        properties={
-            "정의": "입력 변수와 출력 변수 사이의 관계를 모델링하는 통계적 방법",
-            "주요 알고리즘": "선형 회귀, 릿지 회귀 (L2 정규화), 라쏘 회귀 (L1 정규화), 엘라스틱넷, 결정 트리 회귀, 랜덤 포레스트 회귀, 서포트 벡터 회귀 (SVR)",
-            "응용 분야": "주식 가격 예측, 부동산 가격 예측, 판매량 예측, 기후 변화 모델링, 인구 증가 예측"
-        },
-        markdown_content="""
-    # 회귀 (Regression)
+    # 노드삭제
+    # nodes = [3, 4, 6, 7, 8, 9]
+    # for node in nodes:
+    #     manager.delete_node(node)
+    #     print("노드 삭제:", node)
 
-    회귀는 기계 학습의 한 형태로, 입력 변수와 출력 변수 사이의 관계를 모델링하는 통계적 방법입니다.
-
-    ## 주요 특징
-
-    - **목적**: 연속적인 출력 값을 예측하는 것
-    - **입력**: 하나 이상의 독립 변수 (특성)
-    - **출력**: 연속형 종속 변수
-
-    ## 회귀의 종류
-
-    1. **단순 선형 회귀**: 하나의 독립 변수와 하나의 종속 변수 사이의 선형 관계를 모델링
-    2. **다중 선형 회귀**: 여러 개의 독립 변수와 하나의 종속 변수 사이의 선형 관계를 모델링
-    3. **다항 회귀**: 독립 변수와 종속 변수 사이의 비선형 관계를 모델링
-    4. **로지스틱 회귀**: 이진 분류 문제에 사용되는 특별한 형태의 회귀
-
-    ## 주요 알고리즘
-
-    - 선형 회귀
-    - 릿지 회귀 (L2 정규화)
-    - 라쏘 회귀 (L1 정규화)
-    - 엘라스틱넷
-    - 결정 트리 회귀
-    - 랜덤 포레스트 회귀
-    - 서포트 벡터 회귀 (SVR)
-
-    ## 평가 지표
-
-    - 평균 제곱 오차 (MSE)
-    - 평균 절대 오차 (MAE)
-    - 결정 계수 (R-squared)
-    - 조정된 결정 계수
-    - 평균 제곱근 오차 (RMSE)
-
-    ## 응용 분야
-
-    - 주식 가격 예측
-    - 부동산 가격 예측
-    - 판매량 예측
-    - 기후 변화 모델링
-    - 인구 증가 예측
-
-    회귀는 다양한 분야에서 예측 모델을 구축하는 데 사용되며, 복잡한 현상을 이해하고 미래를 예측하는 데 중요한 역할을 합니다.
-    """
-    )
-
-    print("추가 노드:", node)
-
+    # 노드에 연결된 엣지 삭제
+    # edges = manager.get_node_edges(7)
+    # print("엣지:", edges)
+    # for edge in edges:
+    #     manager.delete_edge(edge['id'])
+    #     print("엣지 삭제:", edge['id'])
 
     # 머신러닝과 비지도학습 사이의 엣지 생성
-    source_id = manager.search_nodes("지도학습")[0]['id']
-    target_id = manager.search_nodes("회귀")[0]['id']
-    new_edge = manager.add_edge(source_id, target_id, "관련_작업")
-    print("새로운 엣지:", new_edge)
+    # source_id = manager.search_nodes("지도학습")[0]['id']
+    # target_id = manager.search_nodes("회귀")[0]['id']
+    # new_edge = manager.add_edge(source_id, target_id, "관련_작업")
+    # print("새로운 엣지:", new_edge)
 
 
 

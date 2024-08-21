@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 class NodeCreate(BaseModel):
     name: str
     category: str
-    properties: Optional[Dict[str, str]] = {}
+    properties: Optional[Dict[str, Any]] = {}
     markdown_content: str
 
 class NodeUpdate(BaseModel):
@@ -41,7 +41,7 @@ class NodeResponse(BaseModel):
     id: int
     name: str
     category: str
-    properties: Dict[str, str]
+    properties: Dict[str, Any]
 
 class EdgeCreate(BaseModel):
     source_id: int
