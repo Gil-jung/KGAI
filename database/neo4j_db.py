@@ -34,7 +34,6 @@ class Neo4jDatabase:
     def _create_node(tx, name, category, properties):
         # 카테고리에서 공백을 제거하고 CamelCase로 변환
         safe_category = ''.join(word.capitalize() for word in category.split())
-        
         query = (
             f"CREATE (n:{safe_category} {{name: $name, category: $category}})"
             "SET n += $properties "

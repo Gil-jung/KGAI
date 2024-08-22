@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException, Query, Path
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional, Dict, Any
 from pydantic import BaseModel
-import traceback
 from database.neo4j_db import neo4j_db
 from database.mongo_db import mongo_db
 import logging

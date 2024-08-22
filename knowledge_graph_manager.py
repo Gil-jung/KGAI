@@ -88,7 +88,7 @@ def main():
     print(open("Documents/PML1/01_introduction/00019_the_relationship_between_ml_and_other_fields.md", "r", encoding="utf-8").read())
 
     # 노드삭제
-    # nodes = [3, 4, 6, 7, 8, 9]
+    # nodes = [0, 1, 2]
     # for node in nodes:
     #     manager.delete_node(node)
     #     print("노드 삭제:", node)
