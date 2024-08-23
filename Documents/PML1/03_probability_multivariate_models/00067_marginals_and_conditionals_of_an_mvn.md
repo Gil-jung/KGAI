@@ -4,46 +4,46 @@
 
 ## 1. 다변량 정규 분포(MVN) 정의
 
-MVN은 평균 벡터 \(\mu\)와 공분산 행렬 \(\Sigma\)로 정의됩니다. 이때, n차원의 다변량 정규 분포는 다음과 같이 표현됩니다:
+MVN은 평균 벡터 $\mu$와 공분산 행렬 $\Sigma$로 정의됩니다. 이때, n차원의 다변량 정규 분포는 다음과 같이 표현됩니다:
 
-\[
+$$
 \mathbf{x} \sim \mathcal{N}(\mu, \Sigma)
-\]
+$$
 
 여기서:
-- \(\mathbf{x}\)는 n차원의 랜덤 벡터입니다.
-- \(\mu\)는 n차원의 평균 벡터입니다.
-- \(\Sigma\)는 \(n \times n\) 크기의 공분산 행렬입니다.
+- $\mathbf{x}$는 n차원의 랜덤 벡터입니다.
+- $\mu$는 n차원의 평균 벡터입니다.
+- $\Sigma$는 $n \times n$ 크기의 공분산 행렬입니다.
 
 MVN의 확률 밀도 함수는 다음과 같습니다:
 
-\[
+$$
 p(\mathbf{x}) = \frac{1}{(2\pi)^{n/2} |\Sigma|^{1/2}} \exp \left( -\frac{1}{2} (\mathbf{x} - \mu)^\top \Sigma^{-1} (\mathbf{x} - \mu) \right)
-\]
+$$
 
 ## 2. 주변 분포(Marginal Distribution)
 
-MVN의 성질 중 하나는 벡터 \(\mathbf{x}\)의 일부 성분에 대한 주변 분포도 정규 분포라는 점입니다. 예를 들어, \(\mathbf{x}\)를 두 개의 서브벡터 \(\mathbf{x}_1\)과 \(\mathbf{x}_2\)로 나눌 수 있다고 가정합니다:
+MVN의 성질 중 하나는 벡터 $\mathbf{x}$의 일부 성분에 대한 주변 분포도 정규 분포라는 점입니다. 예를 들어, $\mathbf{x}$를 두 개의 서브벡터 $\mathbf{x}_1$과 $\mathbf{x}_2$로 나눌 수 있다고 가정합니다:
 
-\[
+$$
 \mathbf{x} = \begin{pmatrix} \mathbf{x}_1 \\ \mathbf{x}_2 \end{pmatrix}, \quad \mu = \begin{pmatrix} \mu_1 \\ \mu_2 \end{pmatrix}, \quad \Sigma = \begin{pmatrix} \Sigma_{11} & \Sigma_{12} \\ \Sigma_{21} & \Sigma_{22} \end{pmatrix}
-\]
+$$
 
-이 경우 \(\mathbf{x}_1\)의 주변 분포는 \(\mathbf{x}_1 \sim \mathcal{N}(\mu_1, \Sigma_{11})\)로 표현됩니다.
+이 경우 $\mathbf{x}_1$의 주변 분포는 $\mathbf{x}_1 \sim \mathcal{N}(\mu_1, \Sigma_{11})$로 표현됩니다.
 
 ## 3. 조건부 분포(Conditional Distribution)
 
-MVN의 또 다른 중요한 성질은 한 부분에 대한 조건부 분포도 정규 분포를 따른다는 것입니다. 위의 \(\mathbf{x}\)와 \(\mu\), \(\Sigma\) 표현을 사용하면, \(\mathbf{x}_1\)이 주어진 \(\mathbf{x}_2\)에 대한 조건부 분포는 다음과 같이 표현됩니다:
+MVN의 또 다른 중요한 성질은 한 부분에 대한 조건부 분포도 정규 분포를 따른다는 것입니다. 위의 $\mathbf{x}$와 $\mu$, $\Sigma$ 표현을 사용하면, $\mathbf{x}_1$이 주어진 $\mathbf{x}_2$에 대한 조건부 분포는 다음과 같이 표현됩니다:
 
-\[
+$$
 \mathbf{x}_1 \mid \mathbf{x}_2 = \mathbf{c} \sim \mathcal{N}(\mu_{1|2}, \Sigma_{1|2})
-\]
+$$
 
 여기서:
-- \(\mu_{1|2} = \mu_1 + \Sigma_{12} \Sigma_{22}^{-1} (\mathbf{c} - \mu_2)\)
-- \(\Sigma_{1|2} = \Sigma_{11} - \Sigma_{12} \Sigma_{22}^{-1} \Sigma_{21}\)
+- $\mu_{1|2} = \mu_1 + \Sigma_{12} \Sigma_{22}^{-1} (\mathbf{c} - \mu_2)$
+- $\Sigma_{1|2} = \Sigma_{11} - \Sigma_{12} \Sigma_{22}^{-1} \Sigma_{21}$
 
-이 조건부 분포의 평균은 \(\mathbf{x}_2\)에 의존하며, 공분산은 \(\mathbf{x}_2\)와 독립적입니다.
+이 조건부 분포의 평균은 $\mathbf{x}_2$에 의존하며, 공분산은 $\mathbf{x}_2$와 독립적입니다.
 
 ## 4. 응용 예시
 

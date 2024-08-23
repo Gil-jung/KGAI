@@ -6,17 +6,17 @@
 
 지수족에 속하는 분포는 일반적으로 다음과 같은 형태로 표현됩니다:
 
-\[
+$$
 p(x|\theta) = h(x) \exp \left( \eta(\theta)^T T(x) - A(\theta) \right)
-\]
+$$
 
 여기서:
-- \(x\)는 관측된 데이터입니다.
-- \(\theta\)는 분포의 모수(parameter)입니다.
-- \(h(x)\)는 보조 함수(auxiliary function)로, 데이터 \(x\)에만 의존합니다.
-- \(\eta(\theta)\)는 자연 모수(natural parameter)라고 불리며, 모수 \(\theta\)의 함수입니다.
-- \(T(x)\)는 충분 통계량(sufficient statistic)으로, 데이터 \(x\)의 함수입니다.
-- \(A(\theta)\)는 로그 분배함수(log-partition function) 또는 누적 생성 함수(cumulant generating function)로, \(\theta\)의 함수입니다.
+- $x$는 관측된 데이터입니다.
+- $\theta$는 분포의 모수(parameter)입니다.
+- $h(x)$는 보조 함수(auxiliary function)로, 데이터 $x$에만 의존합니다.
+- $\eta(\theta)$는 자연 모수(natural parameter)라고 불리며, 모수 $\theta$의 함수입니다.
+- $T(x)$는 충분 통계량(sufficient statistic)으로, 데이터 $x$의 함수입니다.
+- $A(\theta)$는 로그 분배함수(log-partition function) 또는 누적 생성 함수(cumulant generating function)로, $\theta$의 함수입니다.
 
 이 구조는 지수족에 속하는 분포들이 다양한 통계적 속성을 공유하게 하며, 그로 인해 많은 이론적 및 실용적 장점이 있습니다.
 
