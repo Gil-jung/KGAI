@@ -148,7 +148,7 @@ async def get_node(node_id: int):
             raise HTTPException(status_code=404, detail="Node not found")
 
         # MongoDB에서 마크다운 문서 가져오기
-        mongo_result = mongo_db.get_document(node_id)
+        # mongo_result = mongo_db.get_document(node_id)
 
         return NodeResponse(
             id=node_id,
