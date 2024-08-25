@@ -81,11 +81,39 @@ class KnowledgeGraphManager:
         response = requests.get(url)
         return response.json() if response.status_code == 200 else None
 
+    def update_markdown_content(self, node_id, new_markdown_content):
+        """
+        MongoDB의 특정 노드의 markdown_content를 업데이트합니다.
+
+        :param node_id: 업데이트할 노드의 ID
+        :param new_markdown_content: 새로운 markdown 내용
+        :return: 업데이트된 노드 정보 또는 None (실패 시)
+        """
+        url = f"{self.base_url}/nodes/{node_id}/markdown"
+        data = {"markdown_content": new_markdown_content}
+        response = requests.put(url, json=data)
+        
+        if response.status_code == 200:
+            print(f"노드 ID {node_id}의 markdown_content가 성공적으로 업데이트되었습니다.")
+            return response.json()
+        else:
+            print(f"노드 ID {node_id}의 markdown_content 업데이트에 실패했습니다. 상태 코드: {response.status_code}")
+            return None
+
 def main():
     manager = KnowledgeGraphManager()
     new_node = True
 
-    print(open("Documents/PML1/01_introduction/00019_the_relationship_between_ml_and_other_fields.md", "r", encoding="utf-8").read())
+    # 노드 ID와 새로운 markdown 내용을 지정
+    node_id = 19  # 업데이트하려는 노드의 ID
+    new_markdown = open("Documents/PML1/02_probability_univariate_models/00020_probability.md", "r", encoding="utf-8").read()
+    # print(new_markdown)
+    # markdown_content 업데이트
+    updated_node = manager.update_markdown_content(node_id, new_markdown)
+    
+    if updated_node:
+        print("업데이트된 노드 정보:", updated_node)
+
 
     # 노드삭제
     # nodes = [0, 1, 2]

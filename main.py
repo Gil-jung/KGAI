@@ -275,6 +275,19 @@ async def get_node_markdown(node_id: int):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.put("/nodes/{node_id}/markdown", response_model=MarkdownResponse, tags=["nodes"])
+async def update_node_markdown(node_id: int, content: MarkdownResponse):
+    try:
+        modified_count = mongo_db.update_document(node_id, content.content)
+        if modified_count == 0:
+            raise HTTPException(status_code=404, detail="Node not found or content not modified")
+        updated_node = mongo_db.get_document(node_id)
+        if updated_node is None:
+            raise HTTPException(status_code=404, detail="Node not found after update")
+        return MarkdownResponse(content=updated_node['markdown_content'])
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)

@@ -6,22 +6,22 @@
 ## 확률 변수 변환의 수학적 정의
 
 ### 1. 단일 확률 변수 변환
-주어진 확률 변수 \( X \)와 함수 \( g(X) \)에 대해, 새로운 확률 변수 \( Y = g(X) \)가 정의됩니다. 이때, \( Y \)의 확률 밀도 함수 \( f_Y(y) \)는 다음과 같이 계산됩니다:
+주어진 확률 변수 $ X $와 함수 $ g(X) $에 대해, 새로운 확률 변수 $ Y = g(X) $가 정의됩니다. 이때, $ Y $의 확률 밀도 함수 $ f_Y(y) $는 다음과 같이 계산됩니다:
 
-\[
+$$
 f_Y(y) = f_X(x) \left| \frac{dx}{dy} \right|
-\]
+$$
 
-여기서 \( x \)는 \( g(X) = y \)를 만족하는 \( X \)의 값이며, \( f_X(x) \)는 원래 확률 변수 \( X \)의 확률 밀도 함수입니다.
+여기서 $ x $는 $ g(X) = y $를 만족하는 $ X $의 값이며, $ f_X(x) $는 원래 확률 변수 $ X $의 확률 밀도 함수입니다.
 
 ### 2. 다변량 확률 변수 변환
-다변량 확률 변수 \( \mathbf{X} = (X_1, X_2, \ldots, X_n) \)의 경우, 함수 \( \mathbf{Y} = g(\mathbf{X}) \)에 의해 변환된 확률 변수 \( \mathbf{Y} = (Y_1, Y_2, \ldots, Y_m) \)의 확률 밀도 함수는 다음과 같이 계산됩니다:
+다변량 확률 변수 $ \mathbf{X} = (X_1, X_2, \ldots, X_n) $의 경우, 함수 $ \mathbf{Y} = g(\mathbf{X}) $에 의해 변환된 확률 변수 $ \mathbf{Y} = (Y_1, Y_2, \ldots, Y_m) $의 확률 밀도 함수는 다음과 같이 계산됩니다:
 
-\[
+$$
 f_\mathbf{Y}(\mathbf{y}) = f_\mathbf{X}(\mathbf{x}) \left| \det \left( \frac{\partial \mathbf{x}}{\partial \mathbf{y}} \right) \right|
-\]
+$$
 
-여기서 \( \frac{\partial \mathbf{x}}{\partial \mathbf{y}} \)는 자코비안 행렬(Jacobian matrix)입니다.
+여기서 $ \frac{\partial \mathbf{x}}{\partial \mathbf{y}} $는 자코비안 행렬(Jacobian matrix)입니다.
 
 ## 확률 변수 변환의 활용
 
