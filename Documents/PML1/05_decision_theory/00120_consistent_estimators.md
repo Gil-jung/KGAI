@@ -1,52 +1,58 @@
-# 일치추정량
+# 일치추정량 (Consistent Estimator)
 
 ## 개요
-일치추정량(consistent estimator)은 표본의 크기가 증가할수록 추정량이 실제 모수(parameter)에 점점 가까워지는 성질을 갖는 추정량입니다. 즉, 표본의 크기가 무한대로 커질 때, 추정량이 모수와 거의 같아지는 것을 의미합니다. 일치추정량의 개념은 통계학 및 확률론에서 매우 중요한 역할을 하며, 주로 모수를 추정하는 데 사용됩니다.
 
-## 정의
+통계학에서 일치추정량은 샘플의 크기가 증가함에 따라, 추정하고자 하는 모수의 실제 값에 점점 더 가까워지는 추정량을 의미합니다. 일치추정량은 샘플 크기 \( n \) 이 무한히 커질 때, 추정량이 참값으로 수렴하는 중요한 속성을 갖습니다.
 
-추정량 \(\hat{\theta}_n\)이 모수 \(\theta\)에 대한 **일치추정량**이 되기 위한 조건은 다음과 같습니다:
+## 일치성의 정의
 
-$$
-\lim_{n \to \infty} P(|\hat{\theta}_n - \theta| \geq \epsilon) = 0 \quad \text{for all} \ \epsilon > 0
-$$
+일치성은 추정량 \(\hat{\theta}_n\)이 샘플 크기 \( n \) 이 무한대로 갈 때, 모수 \(\theta\)에 수렴하는 성질을 말합니다. 수렴의 종류에 따라 약한 일치성과 강한 일치성으로 나눌 수 있습니다.
 
-위 식에서, \(n\)은 표본 크기, \(\hat{\theta}_n\)은 표본 크기 \(n\)에 대한 추정량을 의미합니다. 이 정의는 표본 크기 \(n\)이 무한히 증가할 때, 추정량 \(\hat{\theta}_n\)과 모수 \(\theta\) 사이의 차이가 임의의 작은 값 \(\epsilon\)보다 클 확률이 0으로 수렴한다는 것을 의미합니다.
+### 약한 일치성 (Weak Consistency)
 
-## 일치성의 종류
-
-### 약한 일치성
-추정량 \(\hat{\theta}_n\)이 \(\theta\)에 대해 약한 일치성을 가진다고 할 때, 다음 조건을 만족해야 합니다:
+약한 일치성은 추정량이 샘플 크기 \( n \) 이 커질수록 모수 \(\theta\)로 확률적으로 수렴하는 것을 의미합니다. 이는 다음과 같이 표현됩니다:
 
 $$
-\hat{\theta}_n \xrightarrow{P} \theta
+\hat{\theta}_n \xrightarrow{P} \theta \quad \text{as} \quad n \rightarrow \infty
 $$
 
-여기서 \(\xrightarrow{P}\)는 확률수렴(probability convergence)을 의미합니다. 이는 표본 크기 \(n\)이 증가함에 따라 추정량이 확률적으로 \(\theta\)에 수렴함을 나타냅니다.
-
-### 강한 일치성
-추정량 \(\hat{\theta}_n\)이 \(\theta\)에 대해 강한 일치성을 가진다고 할 때, 다음 조건을 만족해야 합니다:
+여기서 \( \xrightarrow{P} \) 는 확률적 수렴을 나타내며, 이는 임의의 작은 양수 \( \epsilon \)에 대해 다음 조건이 성립함을 의미합니다:
 
 $$
-\hat{\theta}_n \xrightarrow{a.s.} \theta
+\lim_{n \to \infty} P(|\hat{\theta}_n - \theta| > \epsilon) = 0
 $$
 
-여기서 \(\xrightarrow{a.s.}\)는 거의 확실한 수렴(almost sure convergence)을 의미합니다. 이는 표본 크기 \(n\)이 증가할 때 추정량이 \(\theta\)로 거의 확실히 수렴함을 의미합니다. 강한 일치성은 약한 일치성보다 더 강력한 조건입니다.
+즉, 추정량 \(\hat{\theta}_n\)이 실제 값 \(\theta\)와 \( \epsilon \) 범위 밖에 있을 확률이 \( n \) 이 증가함에 따라 0으로 수렴하는 것을 의미합니다.
+
+### 강한 일치성 (Strong Consistency)
+
+강한 일치성은 추정량이 거의 확실하게 모수 \(\theta\)로 수렴하는 것을 의미합니다. 이는 다음과 같이 표현됩니다:
+
+$$
+\hat{\theta}_n \xrightarrow{a.s.} \theta \quad \text{as} \quad n \rightarrow \infty
+$$
+
+여기서 \( \xrightarrow{a.s.} \) 는 거의 확실한 수렴(almost sure convergence)을 의미합니다. 이는 다음 조건이 성립함을 의미합니다:
+
+$$
+P\left(\lim_{n \to \infty} \hat{\theta}_n = \theta \right) = 1
+$$
+
+강한 일치성은 약한 일치성보다 더 강력한 조건으로, 추정량이 참값에 수렴하는 경향이 더 강하다는 것을 나타냅니다.
 
 ## 일치추정량의 예
 
-### 평균의 일치추정량
-평균 \(\mu\)의 일치추정량으로 표본평균 \(\bar{X}_n\)을 들 수 있습니다. 표본평균은 다음과 같이 정의됩니다:
+- **평균의 추정**: 주어진 샘플 \(X_1, X_2, \dots, X_n\)에서 모집단의 평균 \(\mu\)를 추정하는 추정량 \(\hat{\mu}_n = \frac{1}{n} \sum_{i=1}^{n} X_i\)은 일치추정량입니다. 이는 대수의 법칙(Law of Large Numbers)에 의해 \(\hat{\mu}_n\)이 \(\mu\)에 수렴함을 보장합니다.
 
-$$
-\bar{X}_n = \frac{1}{n} \sum_{i=1}^{n} X_i
-$$
+- **분산의 추정**: 모집단의 분산 \(\sigma^2\)에 대한 불편 추정량 \( \hat{\sigma}^2_n = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \hat{\mu}_n)^2 \) 역시 일치추정량입니다.
 
-여기서 \(X_1, X_2, \dots, X_n\)은 독립적이고 동일한 분포를 따르는 표본들입니다. 강한 대수의 법칙(Law of Large Numbers)에 따르면, 표본평균 \(\bar{X}_n\)은 실제 평균 \(\mu\)에 대해 강한 일치성을 가집니다:
+## 일치성의 중요성
 
-$$
-\bar{X}_n \xrightarrow{a.s.} \mu
-$$
+일치성은 추정량의 중요한 속성 중 하나로, 샘플 크기가 충분히 클 때 추정량이 실제 모수를 잘 추정할 수 있음을 보장합니다. 이는 특히 샘플 크기가 크지 않은 상황에서도 일치성을 가지는 추정량이 신뢰할 수 있는 추정을 제공할 가능성이 높다는 점에서 중요합니다.
 
-### 분산의 일치추정량
-모집단 분산 \(\sigma^2\)의 일치추정량으로, 수정된 표본분산 \(S^2\)이 사용됩니다.
+일치추정량은 샘플 크기가 증가할수록 더욱 정확해지므로, 모델 선택이나 추정 과정에서 필수적으로 고려해야 하는 요소입니다.
+
+## 참고 문헌
+- Bishop, C. M. (2006). *Pattern Recognition and Machine Learning*. Springer.
+- Murphy, K. P. (2022). *Probabilistic Machine Learning: An Introduction*. MIT Press.
+- Murphy, K. P. (2023). *Probabilistic Machine Learning: Advanced Topics*. MIT Press.
